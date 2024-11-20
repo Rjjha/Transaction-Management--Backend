@@ -1,0 +1,24 @@
+{
+  "name": "transaction-management-backend",
+  "version": "1.0.0",
+  "description": "Flagright asssignment of Developer role",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "nodemon index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rajesh Jha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}

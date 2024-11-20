@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES6",                       // JavaScript version to compile to
+    "module": "CommonJS",                  // Module system
+    "rootDir": "",                    // Source files directory
+    "outDir": "./dist",                    // Output directory for compiled code
+    "strict": true,                        // Enable strict type-checking
+    "esModuleInterop": true,               // Allow default imports for CommonJS modules
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "index.ts"]
+}
