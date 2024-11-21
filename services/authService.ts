@@ -8,13 +8,6 @@ interface CustomJwtPayload extends JwtPayload {
   role: number;
 }
 
-/**
- * Register a new user
- * @param {string} name - User's name
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Promise<string>} - Success message
- */
 export const registerUser = async (name: string, email: string, password: string): Promise<string> => {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
@@ -26,12 +19,7 @@ export const registerUser = async (name: string, email: string, password: string
   return "User registered successfully.";
 };
 
-/**
- * Login a user
- * @param {string} email - User's email
- * @param {string} password - User's password
- * @returns {Promise<string>} - JWT token
- */
+
 export const loginUser = async (email: string, password: string): Promise<string> => {
   const user = await findUserByEmail(email);
   if (!user) {

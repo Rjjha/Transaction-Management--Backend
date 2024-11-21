@@ -16,7 +16,11 @@ interface CustomJwtPayload extends JwtPayload {
 }
 
 // Middleware for Admin Authorization
-export const authMiddleware = (req: Request, res: Response, next: NextFunction): void | Response<any> => {
+export const authMiddleware: (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => void = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
@@ -30,7 +34,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
 
-    req.user = decoded; // Attach the decoded token payload to the Request object
+    req.user = decoded;
     next();
   } catch (error) {
     return res.status(403).json({ message: "Invalid or expired token." });
