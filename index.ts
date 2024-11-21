@@ -1,17 +1,30 @@
-import express, { Application, Request, Response } from "express";
+import express, { Request, Response } from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import authRoutes from "./routes/authRoutes";
+import connectDB from "./config/dbConfig";
+import dotenv from "dotenv";
+import colors from "colors";
 
-const app: Application = express();
+dotenv.config(); // Load environment variables
+connectDB(); // Connect to the database
+
+const app = express();
+const PORT = process.env.PORT || 3030;
 
 // Middleware
-app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
 
-// Routes
+// Authorization routes
+app.use("/api/v1", authRoutes);
+
+// REST API
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript with Express!");
+  res.send("This is flagright assignment");
 });
 
 // Start server
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`App is listening on port ${PORT}`);
 });
