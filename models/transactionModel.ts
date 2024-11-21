@@ -8,7 +8,8 @@ export interface ITransaction extends Document {
   description: string;
   slug: string;
   dateTime: Date;
-  receiver: string;
+  userId:string;
+  userName:string;
 }
 
 // Defining the Mongoose schema for transactions
@@ -19,7 +20,8 @@ const transactionSchema = new Schema<ITransaction>(
     description: { type: String, required: true },
     slug: { type: String, required: true },
     dateTime: { type: Date, default: Date.now },
-    receiver: { type: String, required: true },
+    userId: { type: String, required: true },
+    userName : { type: String, required: true }
   },
   { timestamps: true }
 );
