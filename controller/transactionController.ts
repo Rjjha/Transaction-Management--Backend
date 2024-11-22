@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createTransaction, getTransactionById, searchTransactions } from "../services/transactionService";
+import { createTransaction, getTransactionById, searchTransactions,generateTransactionReport } from "../services/transactionService";
 import slugify from "slugify";
 
 
@@ -56,9 +56,9 @@ export const getTransactionByIdController = async (req: Request, res: Response):
   
       // Convert query parameters to appropriate data types
       const pageNumber = parseInt(page as string, 10) || 1;
-      const pageSizeNumber = 5; // Default page size
-      const sortAmountValue = parseInt(sortAmount as string, 10); // 0 = asc, 1 = desc
-      const sortTimeValue = parseInt(sortTime as string, 10); // 0 = asc, 1 = desc
+      const pageSizeNumber = 5; 
+      const sortAmountValue = parseInt(sortAmount as string, 10); 
+      const sortTimeValue = parseInt(sortTime as string, 10); 
   
       // Construct the filter query dynamically
       const filters: any = {};
@@ -80,8 +80,8 @@ export const getTransactionByIdController = async (req: Request, res: Response):
   
       // Construct the sorting query dynamically
       const sorting: any = {};
-      if (!isNaN(sortAmountValue)) sorting.amount = sortAmountValue === 0 ? 1 : -1; // Ascending or descending
-      if (!isNaN(sortTimeValue)) sorting.dateTime = sortTimeValue === 0 ? 1 : -1; // Ascending or descending
+      if (!isNaN(sortAmountValue)) sorting.amount = sortAmountValue === 0 ? 1 : -1;
+      if (!isNaN(sortTimeValue)) sorting.dateTime = sortTimeValue === 0 ? 1 : -1;
   
       // Fetch transactions from the service
       const result = await searchTransactions(filters, sorting, pageNumber, pageSizeNumber);
@@ -98,3 +98,30 @@ export const getTransactionByIdController = async (req: Request, res: Response):
       res.status(400).json({ message: errorMessage });
     }
   };
+
+  export const generateTransactionReportController = async (req: Request, res: Response) => {
+    try {
+      const { totalAmount, dateTimeStart, dateTimeEnd } = req.query;
+  
+      // Construct filter based on query parameters
+      const filters: any = {};
+      if (dateTimeStart || dateTimeEnd) {
+        filters.dateTime = {
+          ...(dateTimeStart && { $gte: new Date(dateTimeStart as string) }),
+          ...(dateTimeEnd && { $lte: new Date(dateTimeEnd as string) }),
+        };
+      }
+  
+      // Call the service to generate the report
+      const report = await generateTransactionReport(filters, !!totalAmount);
+  
+      res.status(200).json({
+        success: true,
+        report,
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+      res.status(400).json({ message: errorMessage });
+    }
+  };
+  

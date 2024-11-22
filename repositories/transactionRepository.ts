@@ -28,3 +28,18 @@ export const searchTransactionsRepo = async (
 export const countTransactionsRepo = async (filterQuery: object): Promise<number> => {
   return await Transaction.countDocuments(filterQuery);
 };
+
+export const generateTransactionReportRepo = async (filters: object, calculateTotal: boolean) => {
+  if (calculateTotal) {
+    // Calculate the total transaction amount
+    const totalAmount = await Transaction.aggregate([
+      { $match: filters }, 
+      { $group: { _id: null, total: { $sum: "$amount" } } }, 
+    ]);
+
+    return { totalAmount: totalAmount[0]?.total || 0 };
+  } else {
+    const transactions = await Transaction.find(filters).select("transactionID amount description dateTime");
+    return { transactions };
+  }
+};

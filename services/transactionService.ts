@@ -1,4 +1,4 @@
-import { createTransactionRepo, getTransactionByIdRepo, searchTransactionsRepo, countTransactionsRepo} from "../repositories/transactionRepository";
+import { createTransactionRepo, getTransactionByIdRepo, searchTransactionsRepo, countTransactionsRepo, generateTransactionReportRepo} from "../repositories/transactionRepository";
 import { ITransaction } from "../models/transactionModel";
 import { SortOrder } from "mongoose";
 
@@ -20,4 +20,9 @@ export const searchTransactions = async (
   const transactions = await searchTransactionsRepo(filters, sorting, page, pageSize);
   const totalCount = await countTransactionsRepo(filters);
   return { transactions, totalCount };
+};
+
+export const generateTransactionReport = async (filters: object, calculateTotal: boolean) => {
+  const report = await generateTransactionReportRepo(filters, calculateTotal);
+  return report;
 };
