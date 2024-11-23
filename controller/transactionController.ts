@@ -27,7 +27,7 @@ export const createTransactionController = async (req: Request, res: Response): 
     res.status(201).json({ message: "Transaction created successfully.", data: result });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-    res.status(400).json({ message: errorMessage });
+    res.status(500).json({ message: errorMessage });
   }
 };
 
@@ -45,7 +45,7 @@ export const getTransactionByIdController = async (req: Request, res: Response):
       res.status(200).json({ data: result });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-        res.status(400).json({ message: errorMessage });
+        res.status(500).json({ message: errorMessage });
     }
   };
 
@@ -95,7 +95,7 @@ export const getTransactionByIdController = async (req: Request, res: Response):
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-      res.status(400).json({ message: errorMessage });
+      res.status(500).json({ message: errorMessage });
     }
   };
 
@@ -121,7 +121,7 @@ export const getTransactionByIdController = async (req: Request, res: Response):
       });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-      res.status(400).json({ message: errorMessage });
+      res.status(500).json({ message: errorMessage });
     }
   };
   
