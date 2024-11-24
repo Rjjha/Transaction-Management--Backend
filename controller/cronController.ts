@@ -7,10 +7,10 @@ export const controlCronJobController = async (req: Request, res: Response): Pro
   try {
     if (program === "1") {
       await startCronJob();
-      res.status(200).json({ message: "CRON Job started successfully" });
+      res.status(200).json({ message: "CRON Job started successfully." });
     } else if (program === "0") {
       stopCronJob();
-      res.status(200).json({ message: "CRON Job stopped successfully" });
+      res.status(200).json({ message: "CRON Job stopped successfully." });
     } else {
       res.status(400).json({ message: "Invalid program value. Use 1 to start or 0 to stop the CRON Job." });
     }
