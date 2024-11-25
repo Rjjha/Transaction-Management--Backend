@@ -1,6 +1,6 @@
-import { CronJob } from 'cron';
-import { createTransactionRepo } from '../repositories/transactionRepository';
-import slugify from 'slugify';
+import { CronJob } from "cron";
+import { createTransactionRepo } from "../repositories/transactionRepository";
+import slugify from "slugify";
 
 let cronJob: CronJob | null = null;
 let requestCount = 0;
@@ -8,10 +8,11 @@ const CRON_HIT_LIMIT = 6;
 
 const generateRandomPayload = () => {
   const randomAmount = Math.floor(Math.random() * 1000) + 100;
-  const descriptions = ['for pens', 'for groceries', 'for books', 'for rent'];
-  const randomDescription = descriptions[Math.floor(Math.random() * descriptions.length)];
-  const userIds = ['user1', 'user2', 'user3'];
-  const userNames = ['Alice', 'Bob', 'Charlie'];
+  const descriptions = ["for pens", "for groceries", "for books", "for rent"];
+  const randomDescription =
+    descriptions[Math.floor(Math.random() * descriptions.length)];
+  const userIds = ["user1", "user2", "user3"];
+  const userNames = ["Alice", "Bob", "Charlie"];
   const timestamp = Date.now();
   const randomString = Math.random().toString(10).substring(2, 5).toUpperCase();
   const slug = slugify(randomDescription, { lower: true, strict: true });
@@ -27,17 +28,17 @@ const generateRandomPayload = () => {
 
 export const startCronJob = () => {
   if (cronJob) {
-    console.log('CRON Job is already running.');
+    console.log("CRON Job is already running.");
     return;
   }
 
   requestCount = 0;
 
   cronJob = new CronJob(
-    '*/1 * * * * *',
+    "* * * * * *",
     async () => {
       if (requestCount >= CRON_HIT_LIMIT) {
-        console.log('CRON Job limit exceeded. Stopping the job.');
+        console.log("CRON Job limit exceeded. Stopping the job.");
         stopCronJob();
         return;
       }
@@ -48,25 +49,37 @@ export const startCronJob = () => {
         requestCount++;
         console.log(`CRON Job executed. Request count: ${requestCount}`);
       } catch (error) {
-        console.error('Error in CRON job execution:', error instanceof Error ? error.message : 'Unknown error');
+        console.error(
+          "Error in CRON job execution:",
+          error instanceof Error ? error.message : "Unknown error"
+        );
       }
     },
     null,
     true,
-    'America/Los_Angeles'
+    "America/Los_Angeles"
   );
 
-  console.log('CRON Job started successfully.');
+  console.log("CRON Job started successfully.");
 };
 
 export const stopCronJob = () => {
   if (!cronJob) {
-    console.log('No CRON Job is currently running.');
+    console.log("No CRON Job is currently running.");
     return;
   }
 
   cronJob.stop();
   cronJob = null;
   requestCount = 0;
-  console.log('CRON Job stopped successfully.');
+  console.log("CRON Job stopped successfully.");
+};
+
+// Get the current status of the CRON job
+export const getCronStatus = () => {
+  return {
+    isRunning: cronJob ? true : false,
+    hitCount: requestCount,
+    remainingExecutions: Math.max(CRON_HIT_LIMIT - requestCount, 0),
+  };
 };
